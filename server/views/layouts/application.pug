@@ -3,7 +3,7 @@ include ../mixins/forms.pug
 doctype html
 html(lang="en")
   head
-    title Hexlet Fastify Boilerplate
+    title= t('appName')
     script(src=assetPath('main.js'))
     link(href=assetPath('main.css') rel="stylesheet")
     meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
@@ -39,4 +39,4 @@ html(lang="en")
 
     footer
       .container.my-5.pt-4.border-top
-        a(target="_blank" href="https://ru.hexlet.io") Hexlet
+        a(target="_blank" href="https://github.com/bondiano/backend-project-lvl4") Project source on GitHub

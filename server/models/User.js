@@ -19,6 +19,8 @@ export default class User extends unique(Model) {
       properties: {
         id: { type: 'integer' },
         email: { type: 'string', format: 'email' },
+        firstName: { type: 'string', minLength: 1 },
+        lastName: { type: 'string', minLength: 1 },
         password: { type: 'string', minLength: 3 },
       },
     };
@@ -26,6 +28,10 @@ export default class User extends unique(Model) {
 
   set password(value) {
     this.passwordDigest = encrypt(value);
+  }
+
+  get name() {
+    return `${this.firstName} ${this.lastName}`;
   }
 
   verifyPassword(password) {
