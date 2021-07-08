@@ -22,11 +22,8 @@ module.exports = {
     migrations,
   },
   production: {
-    client: 'sqlite3',
-    connection: {
-      filename: './database.sqlite',
-    },
-    useNullAsDefault: true,
+    client: 'pg',
+    connection: process.env.DATABASE_URL,
     migrations,
   },
 };

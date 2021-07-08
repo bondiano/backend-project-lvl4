@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import getApp from '../server/index.js';
 import encrypt from '../server/lib/secure.js';
-import { getTestData, prepareData } from './helpers/index.js';
+import { getTestData, prepareData, signIn } from './helpers/index.js';
 
 describe('test users CRUD', () => {
   let app;
@@ -18,9 +18,6 @@ describe('test users CRUD', () => {
   });
 
   beforeEach(async () => {
-    // тесты не должны зависеть друг от друга
-    // перед каждым тестом выполняем миграции
-    // и заполняем БД тестовыми данными
     await knex.migrate.latest();
     await prepareData(app);
   });
@@ -62,8 +59,61 @@ describe('test users CRUD', () => {
     expect(user).toMatchObject(expected);
   });
 
+  it('edit', async () => {
+    const cookie = await signIn(app, app.reverse('session'), testData.users.existing);
+
+    const currentUser = await models.user.query()
+      .findOne({ email: testData.users.existing.email });
+    const response = await app.inject({
+      method: 'GET',
+      url: app.reverse('editUser', { id: currentUser.id }),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(200);
+  });
+
+  it('update', async () => {
+    const cookie = await signIn(app, app.reverse('session'), testData.users.existing);
+
+    const currentUser = await models.user.query()
+      .findOne({ email: testData.users.existing.email });
+    const params = testData.users.new;
+    const response = await app.inject({
+      method: 'PATCH',
+      url: app.reverse('user', { id: currentUser.id }),
+      cookies: cookie,
+      payload: {
+        data: params,
+      },
+    });
+
+    expect(response.statusCode).toBe(302);
+    const expected = {
+      ..._.omit(params, 'password'),
+      passwordDigest: encrypt(params.password),
+    };
+    const user = await models.user.query().findById(currentUser.id);
+    expect(user).toMatchObject(expected);
+  });
+
+  it('delete', async () => {
+    const cookie = await signIn(app, app.reverse('session'), testData.users.deleted);
+
+    const currentUser = await models.user.query()
+      .findOne({ email: testData.users.deleted.email });
+    const response = await app.inject({
+      method: 'DELETE',
+      url: app.reverse('user', { id: currentUser.id }),
+      cookies: cookie,
+    });
+
+    expect(response.statusCode).toBe(302);
+    const user = await models.user.query().findById(currentUser.id);
+    expect(user).toBeUndefined();
+  });
+
   afterEach(async () => {
-    // после каждого теста откатываем миграции
     await knex.migrate.rollback();
   });
 

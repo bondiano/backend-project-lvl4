@@ -55,6 +55,7 @@
     "mini-css-extract-plugin": "^1.6.0",
     "objection": "^2.2.15",
     "objection-unique": "^1.2.2",
+    "pg": "^8.6.0",
     "pino-pretty": "^5.0.2",
     "point-of-view": "^4.14.0",
     "pug": "^3.0.2",

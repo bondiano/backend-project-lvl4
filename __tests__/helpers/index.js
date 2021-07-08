@@ -1,5 +1,4 @@
 // @ts-check
-
 import fs from 'fs';
 import path from 'path';
 
@@ -14,4 +13,18 @@ export const prepareData = async (app) => {
 
   // получаем данные из фикстур и заполняем БД
   await knex('users').insert(getFixtureData('users.json'));
+};
+
+export const signIn = async (app, { url, params }) => {
+  const response = await app.inject({
+    method: 'POST',
+    url,
+    payload: {
+      data: params,
+    },
+  });
+
+  const [sessionCookie] = response.cookies;
+  const { name, value } = sessionCookie;
+  return { [name]: value };
 };
