@@ -1,0 +1,88 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/bondiano/backend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/bondiano/backend-project-lvl4/actions)",
+  "main": "server/index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "jest",
+    "prebuild": "rm -rf dist",
+    "build-configs": "babel webpack.config.babel.js --out-dir dist",
+    "build-db": "cp knexfile.js dist && NODE_ENV=production knex migrate:latest",
+    "build-server": "NODE_ENV=production babel server --out-dir dist/server --source-maps inline && cp -r server/views dist/server/views",
+    "build-frontend": "NODE_ENV=production webpack --mode production",
+    "build": "npm run build-configs && npm run build-frontend && npm run build-server && npm run build-db",
+    "start": "NODE_ENV=production node dist/server/bin/server.js"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/__tests__/helpers/"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bondiano/backend-project-lvl4.git"
+  },
+  "author": "bondiano",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bondiano/backend-project-lvl4/issues"
+  },
+  "homepage": "https://github.com/bondiano/backend-project-lvl4#readme",
+  "dependencies": {
+    "bootstrap": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "fastify": "^3.17.0",
+    "fastify-error-page": "^4.0.0",
+    "fastify-flash": "^2.0.2",
+    "fastify-formbody": "^5.0.0",
+    "fastify-method-override": "^1.5.6",
+    "fastify-objectionjs": "^0.4.0",
+    "fastify-passport": "^0.4.2",
+    "fastify-reverse-routes": "^3.0.0",
+    "fastify-secure-session": "^2.3.1",
+    "fastify-sensible": "^3.1.1",
+    "fastify-static": "^4.2.2",
+    "i18next": "^20.3.1",
+    "jquery": "^3.6.0",
+    "knex": "^0.21.19",
+    "lodash": "^4.17.21",
+    "mini-css-extract-plugin": "^1.6.0",
+    "objection": "^2.2.15",
+    "objection-unique": "^1.2.2",
+    "pino-pretty": "^5.0.2",
+    "point-of-view": "^4.14.0",
+    "pug": "^3.0.2",
+    "qs": "^6.10.1",
+    "sqlite3": "^5.0.2",
+    "webpack": "^5.38.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/node": "^7.14.2",
+    "@babel/preset-env": "^7.14.4",
+    "@jest/globals": "^27.0.3",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.2",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^27.0.2",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.6",
+    "eslint": "^7.28.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest": "^24.3.6",
+    "jest": "^27.0.4",
+    "jest-cli": "^27.0.4",
+    "nodemon": "^2.0.7",
+    "style-loader": "^2.0.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
