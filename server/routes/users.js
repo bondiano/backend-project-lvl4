@@ -1,6 +1,7 @@
 // @ts-check
 
 import i18next from 'i18next';
+import _ from 'lodash';
 
 export default (app) => {
   app
@@ -13,9 +14,18 @@ export default (app) => {
       const user = new app.objection.models.user();
       reply.render('users/new', { user });
     })
-    .get('/users/:id/edit', (req, reply) => {
-      const user = new app.objection.models.user();
+    .get('/users/:id/edit', { name: 'editUser', preValidation: app.authenticate }, async (req, reply) => {
+      const { id } = req.params;
+
+      if (Number(id) !== req.user.id) {
+        req.flash('error', i18next.t('flash.user.accessError'));
+        reply.redirect(app.reverse('users'));
+        return reply;
+      }
+
+      const user = await app.objection.models.user.query().findById(id);
       reply.render('users/edit', { user });
+      return reply;
     })
     .post('/users', async (req, reply) => {
       const user = new app.objection.models.user();
@@ -32,6 +42,54 @@ export default (app) => {
         reply.render('users/new', { user, errors: data });
       }
 
+      return reply;
+    })
+    .patch('/users/:id', { name: 'user', preValidation: app.authenticate }, async (req, reply) => {
+      const { id } = req.params;
+
+      if (Number(id) !== req.user.id) {
+        req.flash('error', i18next.t('flash.user.accessError'));
+        reply.redirect(app.reverse('users'));
+        return reply;
+      }
+
+      const user = await app.objection.models.user.query().findById(id);
+
+      try {
+        await user.$query().patch(req.body.data);
+        req.flash('info', i18next.t('flash.user.edit.success'));
+        reply.redirect(app.reverse('users'));
+      } catch ({ data }) {
+        req.flash('error', i18next.t('flash.user.edit.error'));
+        reply.code(422);
+        user.$set(req.body.user);
+        reply.render('users/edit', { user, errors: data });
+      }
+
+      return reply;
+    })
+    .delete('/users/:id', { name: 'deleteUser', preValidation: app.authenticate }, async (req, reply) => {
+      const { id } = req.params;
+
+      if (Number(id) !== req.user.id) {
+        req.flash('error', i18next.t('flash.user.accessError'));
+        reply.redirect(app.reverse('users'));
+        return reply;
+      }
+
+      const user = await app.objection.models.user.query().findById(id);
+      const creatorTasks = await user.$relatedQuery('creatorTasks');
+      const executorTasks = await user.$relatedQuery('executorTasks');
+
+      if (_.isEmpty(creatorTasks) && _.isEmpty(executorTasks)) {
+        await app.objection.models.user.query().deleteById(id);
+        req.logOut();
+        req.flash('info', i18next.t('flash.user.delete.success'));
+      } else {
+        req.flash('error', i18next.t('flash.user.delete.error'));
+      }
+
+      reply.redirect(app.reverse('users'));
       return reply;
     });
 };
