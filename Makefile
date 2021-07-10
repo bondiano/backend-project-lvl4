@@ -9,6 +9,9 @@ db-migrate:
 build:
 	npm run build
 
+build-ci:
+	npm run build:ci
+
 prepare:
 	cp -n .env.example .env || true
 
@@ -26,3 +29,6 @@ lint:
 
 test:
 	npm test -s
+
+test-coverage:
+	npm test -- --coverage

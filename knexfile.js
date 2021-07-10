@@ -1,5 +1,4 @@
 // @ts-check
-require('dotenv').config();
 
 const path = require('path');
 
@@ -13,6 +12,7 @@ module.exports = {
     connection: {
       filename: './database.sqlite',
     },
+    debug: true,
     useNullAsDefault: true,
     migrations,
   },
@@ -25,7 +25,6 @@ module.exports = {
   production: {
     client: 'pg',
     connection: process.env.DATABASE_URL,
-    useNullAsDefault: true,
     migrations,
   },
 };

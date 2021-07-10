@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/bondiano/backend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/bondiano/backend-project-lvl4/actions)",
+  "description": "",
   "main": "server/index.js",
   "directories": {
     "doc": "docs"
@@ -14,6 +14,7 @@
     "build-server": "NODE_ENV=production babel server --out-dir dist/server --source-maps inline && cp -r server/views dist/server/views",
     "build-frontend": "NODE_ENV=production webpack --mode production",
     "build": "npm run build-configs && npm run build-frontend && npm run build-server && npm run build-db",
+    "build:ci": "npm run build-frontend && npm run build-frontend && npm run build-server",
     "start": "NODE_ENV=production node dist/server/bin/server.js"
   },
   "engines": {
