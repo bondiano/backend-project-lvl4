@@ -16,17 +16,15 @@ describe('test users CRUD', () => {
     await prepareData(app);
   });
 
-  it('new', async () => {
+  it('test sign in / sign out', async () => {
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('newSession'),
     });
 
     expect(response.statusCode).toBe(200);
-  });
 
-  it('log in', async () => {
-    const response = await app.inject({
+    const responseSignIn = await app.inject({
       method: 'POST',
       url: app.reverse('session'),
       payload: {
@@ -34,25 +32,16 @@ describe('test users CRUD', () => {
       },
     });
 
-    expect(response.statusCode).toBe(302);
-  });
+    expect(responseSignIn.statusCode).toBe(302);
 
-  it('log out', async () => {
-    const response = await app.inject({
-      method: 'POST',
-      url: app.reverse('session'),
-      payload: {
-        data: testData.users.existing,
-      },
-    });
-
-    const [sessionCookie] = response.cookies;
+    const [sessionCookie] = responseSignIn.cookies;
     const { name, value } = sessionCookie;
     const cookie = { [name]: value };
 
     const responseSignOut = await app.inject({
       method: 'DELETE',
       url: app.reverse('session'),
+      // используем полученные ранее куки
       cookies: cookie,
     });
 

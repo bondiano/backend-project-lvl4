@@ -1,7 +1,6 @@
 // @ts-check
 
 import i18next from 'i18next';
-import _ from 'lodash';
 
 export default (app) => {
   app
@@ -34,11 +33,11 @@ export default (app) => {
       try {
         const validUser = app.objection.models.user.fromJson(req.body.data);
         await app.objection.models.user.query().insert(validUser);
-        req.flash('info', i18next.t('flash.users.create.success'));
+        req.flash('info', i18next.t('flash.user.create.success'));
         reply.redirect(app.reverse('root'));
       } catch ({ data, ...rest }) {
         console.log('🚀 ~ file: users.js ~ line 30 ~ .post ~ data', data, rest);
-        req.flash('error', i18next.t('flash.users.create.error'));
+        req.flash('error', i18next.t('flash.user.create.error'));
         reply.render('users/new', { user, errors: data });
       }
 
@@ -68,7 +67,7 @@ export default (app) => {
 
       return reply;
     })
-    .delete('/users/:id', { name: 'deleteUser', preValidation: app.authenticate }, async (req, reply) => {
+    .delete('/users/:id', { preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
 
       if (Number(id) !== req.user.id) {
@@ -77,18 +76,10 @@ export default (app) => {
         return reply;
       }
 
-      const user = await app.objection.models.user.query().findById(id);
-      const creatorTasks = await user.$relatedQuery('creatorTasks');
-      const executorTasks = await user.$relatedQuery('executorTasks');
+      await app.objection.models.user.query().deleteById(id);
 
-      if (_.isEmpty(creatorTasks) && _.isEmpty(executorTasks)) {
-        await app.objection.models.user.query().deleteById(id);
-        req.logOut();
-        req.flash('info', i18next.t('flash.user.delete.success'));
-      } else {
-        req.flash('error', i18next.t('flash.user.delete.error'));
-      }
-
+      req.logOut();
+      req.flash('info', i18next.t('flash.user.delete.success'));
       reply.redirect(app.reverse('users'));
       return reply;
     });

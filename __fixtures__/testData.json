@@ -1,12 +1,18 @@
 {
   "users": {
     "new": {
+      "firstName": "Malika",
+      "lastName": "Hodkiweicz",
       "email": "malika_hodkiewicz75@live.com",
       "password": "RLJvaIgPOnX5r03"
     },
     "existing": {
       "email": "lawrence.kulas87@outlook.com",
       "password": "O6AvLIQL1cbzrre"
+    },
+    "deleted": {
+      "email": "batbondik0@gmail.com",
+      "password": "1q2w3e"
     }
   }
 }

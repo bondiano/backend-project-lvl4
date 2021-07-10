@@ -60,21 +60,21 @@ describe('test users CRUD', () => {
   });
 
   it('edit', async () => {
-    const cookie = await signIn(app, app.reverse('session'), testData.users.existing);
+    const cookies = await signIn(app, testData.users.existing);
 
     const currentUser = await models.user.query()
       .findOne({ email: testData.users.existing.email });
     const response = await app.inject({
       method: 'GET',
       url: app.reverse('editUser', { id: currentUser.id }),
-      cookies: cookie,
+      cookies,
     });
 
     expect(response.statusCode).toBe(200);
   });
 
   it('update', async () => {
-    const cookie = await signIn(app, app.reverse('session'), testData.users.existing);
+    const cookies = await signIn(app, testData.users.existing);
 
     const currentUser = await models.user.query()
       .findOne({ email: testData.users.existing.email });
@@ -82,7 +82,7 @@ describe('test users CRUD', () => {
     const response = await app.inject({
       method: 'PATCH',
       url: app.reverse('user', { id: currentUser.id }),
-      cookies: cookie,
+      cookies,
       payload: {
         data: params,
       },
@@ -98,10 +98,11 @@ describe('test users CRUD', () => {
   });
 
   it('delete', async () => {
-    const cookie = await signIn(app, app.reverse('session'), testData.users.deleted);
+    const cookie = await signIn(app, testData.users.deleted);
 
     const currentUser = await models.user.query()
       .findOne({ email: testData.users.deleted.email });
+
     const response = await app.inject({
       method: 'DELETE',
       url: app.reverse('user', { id: currentUser.id }),
@@ -110,6 +111,7 @@ describe('test users CRUD', () => {
 
     expect(response.statusCode).toBe(302);
     const user = await models.user.query().findById(currentUser.id);
+
     expect(user).toBeUndefined();
   });
 

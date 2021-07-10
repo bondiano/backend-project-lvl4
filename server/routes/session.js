@@ -10,20 +10,26 @@ export default (app) => {
     })
     .post('/session', { name: 'session' }, app.fp.authenticate('form', async (req, reply, err, user) => {
       if (err) {
-        return app.httpErrors.internalServerError(err);
+        reply.internalServerError(err);
       }
 
       if (!user) {
-        const signInForm = req.body.data;
+        const signInForm = new app.objection.models.user();
         const errors = {
           email: [{ message: i18next.t('flash.session.create.error') }],
         };
-        return reply.render('session/new', { signInForm, errors });
+        signInForm.$set(req.body.data);
+        reply.code(422);
+        reply.render('session/new', { signInForm, errors });
+
+        return reply;
       }
 
       await req.logIn(user);
       req.flash('success', i18next.t('flash.session.create.success'));
-      return reply.redirect(app.reverse('root'));
+      reply.redirect(app.reverse('root'));
+
+      return reply;
     }))
     .delete('/session', (req, reply) => {
       req.logOut();
