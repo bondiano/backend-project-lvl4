@@ -15,12 +15,12 @@ export const prepareData = async (app) => {
   await knex('users').insert(getFixtureData('users.json'));
 };
 
-export const signIn = async (app, params) => {
+export const signIn = async (app, data) => {
   const response = await app.inject({
     method: 'POST',
     url: app.reverse('session'),
     payload: {
-      data: params,
+      data,
     },
   });
 

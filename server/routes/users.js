@@ -7,6 +7,7 @@ export default (app) => {
     .get('/users', { name: 'users' }, async (req, reply) => {
       const users = await app.objection.models.user.query();
       reply.render('users/index', { users });
+
       return reply;
     })
     .get('/users/new', { name: 'newUser' }, (req, reply) => {
@@ -19,11 +20,13 @@ export default (app) => {
       if (Number(id) !== req.user.id) {
         req.flash('error', i18next.t('flash.user.accessError'));
         reply.redirect(app.reverse('users'));
+
         return reply;
       }
 
       const user = await app.objection.models.user.query().findById(id);
       reply.render('users/edit', { user });
+
       return reply;
     })
     .post('/users', async (req, reply) => {
@@ -35,8 +38,7 @@ export default (app) => {
         await app.objection.models.user.query().insert(validUser);
         req.flash('info', i18next.t('flash.user.create.success'));
         reply.redirect(app.reverse('root'));
-      } catch ({ data, ...rest }) {
-        console.log('🚀 ~ file: users.js ~ line 30 ~ .post ~ data', data, rest);
+      } catch ({ data }) {
         req.flash('error', i18next.t('flash.user.create.error'));
         reply.render('users/new', { user, errors: data });
       }
@@ -81,6 +83,7 @@ export default (app) => {
       req.logOut();
       req.flash('info', i18next.t('flash.user.delete.success'));
       reply.redirect(app.reverse('users'));
+
       return reply;
     });
 };

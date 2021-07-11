@@ -1,0 +1,14 @@
+[
+  {
+    "name": "ready"
+  },
+  {
+    "name": "assigned"
+  },
+  {
+    "name": "started"
+  },
+  {
+    "name": "finished"
+  }
+]

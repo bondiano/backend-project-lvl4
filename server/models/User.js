@@ -1,13 +1,14 @@
 // @ts-check
 
-import { Model } from 'objection';
 import objectionUnique from 'objection-unique';
 
 import encrypt from '../lib/secure.js';
 
+import BaseModel from './BaseModel.js';
+
 const unique = objectionUnique({ fields: ['email'] });
 
-export default class User extends unique(Model) {
+export default class User extends unique(BaseModel) {
   static get tableName() {
     return 'users';
   }

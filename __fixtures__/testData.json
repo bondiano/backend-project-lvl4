@@ -14,5 +14,16 @@
       "email": "batbondik0@gmail.com",
       "password": "1q2w3e"
     }
+  },
+  "statuses": {
+    "new": {
+      "name": "paused"
+    },
+    "existing1": {
+      "name": "assigned"
+    },
+    "existing2": {
+      "name": "started"
+    }
   }
 }

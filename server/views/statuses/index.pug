@@ -1,0 +1,20 @@
+extends ../layouts/application.pug
+
+block content
+  a.nav-link(href=route('newStatus'))= t('views.taskStatus.buttons.new')
+  table.table.table-striped
+    thead
+      tr
+        th= t('views.taskStatus.id')
+        th= t('views.taskStatus.name')
+        th= t('views.taskStatus.createdAt')
+        th= t('views.taskStatus.actions')
+    tbody
+      each taskStatus in taskStatuses
+        tr
+          td= taskStatus.id
+          td= taskStatus.name
+          td= formatDate(taskStatus.createdAt)
+          td
+            a(href=route('editStatus', { id: taskStatus.id }))= t('views.taskStatus.buttons.edit')
+            +buttonTo(route('status', { id: taskStatus.id }), 'delete')(class="btn btn-link" value=t('views.taskStatus.buttons.delete'))

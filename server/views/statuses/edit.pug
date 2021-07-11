@@ -1,0 +1,10 @@
+extends ../layouts/application.pug
+
+block header
+  = t('views.taskStatus.edit.editing')
+
+block content
+  +formFor()(action=route('status', { id: taskStatus.id }) method='post')
+    input(type='hidden' name='_method' value='PATCH')
+    +input(taskStatus, 'name', errors)(type="text")
+    +submit(taskStatus)(value=t('views.taskStatus.edit.submit'))
