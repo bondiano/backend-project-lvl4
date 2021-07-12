@@ -16,6 +16,7 @@ import fastifyObjectionjs from 'fastify-objectionjs';
 import qs from 'qs';
 import Pug from 'pug';
 import i18next from 'i18next';
+import Rollbar from 'rollbar';
 
 import ru from './locales/ru.js';
 
@@ -121,12 +122,30 @@ const registerPlugins = (app) => {
   });
 };
 
+const setupErrorHandler = (app) => {
+  app.setErrorHandler(async (err, req, reply) => {
+    if (isProduction) {
+      const rollbar = new Rollbar({
+        accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+        captureUncaught: true,
+        captureUnhandledRejections: true,
+      });
+
+      rollbar.error(err, req);
+    }
+
+    reply.send(err);
+  });
+};
+
 export default () => {
   const app = fastify({
     logger: {
       prettyPrint: isDevelopment,
     },
   });
+
+  setupErrorHandler(app);
 
   registerPlugins(app);
 

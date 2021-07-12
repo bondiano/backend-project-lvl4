@@ -43,6 +43,34 @@ module.exports = {
           hasTasks: 'Статус присвоен некоторым задачам',
         },
       },
+      task: {
+        create: {
+          error: 'Не удалось создать задачу',
+          success: 'Задача успешно создана',
+        },
+        edit: {
+          error: 'Не удалось изменить задачу',
+          success: 'Задача успешно изменена',
+        },
+        delete: {
+          error: 'Задачу может удалить только её автор',
+          success: 'Задача успешно удалена',
+        },
+      },
+      label: {
+        create: {
+          error: 'Не удалось создать метку',
+          success: 'Метка успешно создана',
+        },
+        edit: {
+          error: 'Не удалось изменить метку',
+          success: 'Метка успешно изменена',
+        },
+        delete: {
+          error: 'Не удалось удалить метку',
+          success: 'Метка успешно удалена',
+        },
+      },
       authError: 'Доступ запрещён! Пожалуйста, авторизируйтесь.',
     },
     layouts: {
@@ -52,6 +80,8 @@ module.exports = {
         signUp: 'Регистрация',
         signOut: 'Выход',
         statuses: 'Статусы',
+        labels: 'Метки',
+        tasks: 'Задачи',
       },
     },
     views: {
@@ -100,6 +130,55 @@ module.exports = {
           submit: 'Изменить',
           editing: 'Изменение статуса',
           name: 'Наименование',
+        },
+      },
+      label: {
+        create: 'Создать метку',
+        id: 'ID',
+        name: 'Наименование',
+        createdAt: 'Дата создания',
+        new: {
+          title: 'Создание метки',
+          submit: 'Создать',
+        },
+        edit: {
+          title: 'Изменение метки',
+          submit: 'Изменить',
+        },
+        delete: {
+          submit: 'Удалить',
+        },
+      },
+      task: {
+        create: 'Создать задачу',
+        id: 'ID',
+        name: 'Наименование',
+        description: 'Описание',
+        statusId: 'Статус',
+        status: 'Статус',
+        creatorId: 'Автор',
+        creator: 'Автор',
+        executorId: 'Исполнитель',
+        executor: 'Исполнитель',
+        labels: 'Метки',
+        createdAt: 'Дата создания',
+        new: {
+          title: 'Создание задачи',
+          submit: 'Создать',
+        },
+        edit: {
+          title: 'Изменение задачи',
+          submit: 'Изменить',
+        },
+        delete: {
+          submit: 'Удалить',
+        },
+        filter: {
+          status: 'Статус',
+          executor: 'Исполнитель',
+          label: 'Метка',
+          isCreatorUser: 'Только мои задачи',
+          submit: 'Показать',
         },
       },
       welcome: {

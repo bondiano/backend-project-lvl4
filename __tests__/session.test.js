@@ -41,7 +41,6 @@ describe('test users CRUD', () => {
     const responseSignOut = await app.inject({
       method: 'DELETE',
       url: app.reverse('session'),
-      // используем полученные ранее куки
       cookies: cookie,
     });
 

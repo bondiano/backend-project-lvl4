@@ -11,10 +11,18 @@ export const getTestData = () => getFixtureData('testData.json');
 export const prepareData = async (app) => {
   const { knex } = app.objection;
 
-  // получаем данные из фикстур и заполняем БД
   await knex('users').insert(getFixtureData('users.json'));
+  await knex('statuses').insert(getFixtureData('statuses.json'));
+  await knex('tasks').insert(getFixtureData('tasks.json'));
+  await knex('labels').insert(getFixtureData('labels.json'));
+  await knex('tasks_labels').insert(getFixtureData('tasksLabels.json'));
 };
 
+/**
+ * @param {Object} app
+ * @param {Object} data
+ * @returns cookies
+ */
 export const signIn = async (app, data) => {
   const response = await app.inject({
     method: 'POST',

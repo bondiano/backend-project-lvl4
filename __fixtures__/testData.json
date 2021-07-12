@@ -19,11 +19,36 @@
     "new": {
       "name": "paused"
     },
-    "existing1": {
+    "existing": {
       "name": "assigned"
+    }
+  },
+  "labels": {
+    "new": {
+      "name": "urgent"
     },
-    "existing2": {
-      "name": "started"
+    "existing": {
+      "name": "bug"
+    }
+  },
+  "tasks": {
+    "new": {
+      "name": "Task new",
+      "description": "description task new",
+      "statusId": 1,
+      "creatorId": 2,
+      "executorId": 3,
+      "labels": [
+        1,
+        2
+      ]
+    },
+    "existing": {
+      "name": "lool kek",
+      "statusId": 1,
+      "executorId": 2,
+      "creatorId": 2,
+      "description": "shmth new"
     }
   }
 }

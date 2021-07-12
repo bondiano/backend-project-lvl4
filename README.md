@@ -22,3 +22,9 @@ $ make start
 ```sh
 $ make test
 ```
+
+## lint
+
+```sh
+$ make lint
+```

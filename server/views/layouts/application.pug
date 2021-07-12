@@ -21,6 +21,11 @@ html(lang="en")
               if isAuthenticated()
                 li.nav-item
                   a.nav-link(href=route('statuses'))= t('layouts.application.statuses')
+                li.nav-item
+                  a.nav-link(href=route('labels'))= t('layouts.application.labels')
+                li.nav-item
+                  a.nav-link(href=route('tasks'))= t('layouts.application.tasks')
+
           ul.navbar-nav
             if isAuthenticated()
               li.nav-item

@@ -1,0 +1,33 @@
+extends ../layouts/application.pug
+
+block content
+  .card
+    .card-header.bg-secondary.text-white
+      h2= task.name
+    .card-body.bg-light
+      p= task.description
+      hr
+      div.container
+        div.row.p-1
+          div.col= t('views.task.creator')
+          div.col= task.creator.name
+        div.row.p-1
+          div.col= t('views.task.executor')
+          div.col= _.get(task, 'executor.name', '')
+        div.row.p-1
+          div.col= t('views.task.status')
+          div.col= task.status.name
+        div.row.p-1
+          div.col= t('views.task.createdAt')
+          div.col= formatDate(task.createdAt)
+        div.row.p-1
+          div.col
+            h6= `${t('views.task.labels')}:`
+            if _.has(task, 'labels')
+              ul
+                each label in task.labels
+                  li= label.name
+        div.row.p-1
+          div.col
+            a(href=route('editTask', { id: task.id }))= t('views.task.edit.submit')
+            +buttonTo(route('task', { id: task.id }), 'delete')(class="btn btn-link" value=t('views.task.delete.submit'))

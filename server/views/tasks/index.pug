@@ -1,0 +1,41 @@
+extends ../layouts/application.pug
+
+block content
+  a.nav-link(href=route('newTask'))= t('views.task.create')
+
+  .card
+    .card-body.p-2.bg-light
+      form(action=route('tasks') method='get')
+        .row
+          .col
+            +filterSelect('task', filterConditions, 'status', statuses)(class="ml-2 mr-3")
+          .col
+            +filterSelect('task', filterConditions, 'executor', users)(class="ml-2 mr-3")
+          .col
+            +filterSelect('task', filterConditions, 'label', labels)(class="ml-2 mr-3")
+        +filterCheckBox('task', filterConditions, 'isCreatorUser')(class="ml-30")
+        +submit()(value= t(`views.task.filter.submit`) class='ml-3')
+
+  table.table.table-striped
+    thead
+      tr
+        th= t('views.task.id')
+        th= t('views.task.name')
+        th= t('views.task.status')
+        th= t('views.task.creator')
+        th= t('views.task.executor')
+        th= t('views.task.createdAt')
+        th
+    tbody
+      each task in tasks
+        tr
+          td= task.id
+          td
+            a(href=route('task', { id: task.id }))= task.name
+          td= task.status.name
+          td= task.creator.name
+          td= _.get(task.executor, 'name')
+          td= formatDate(task.createdAt)
+          td
+            a(href=route('editTask', { id: task.id }))= t('views.task.edit.submit')
+            +buttonTo(route('task', { id: task.id }), 'delete')(class="btn btn-link" value=t('views.task.delete.submit'))

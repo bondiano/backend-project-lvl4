@@ -1,0 +1,16 @@
+[
+  {
+    "name": "add tests",
+    "statusId": 2,
+    "executorId": 2,
+    "creatorId": 1,
+    "description": "write tests for tasks CRUD"
+  },
+  {
+    "name": "lool kek",
+    "statusId": 1,
+    "executorId": 2,
+    "creatorId": 2,
+    "description": "shmth new"
+  }
+]

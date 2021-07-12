@@ -33,6 +33,7 @@ export default (app) => {
     .get('/statuses/:id/edit', { name: 'editStatus', preValidation: app.authenticate }, async (req, reply) => {
       const taskStatus = await app.objection.models.taskStatus.query().findById(req.params.id);
       reply.render('statuses/edit', { taskStatus });
+
       return reply;
     })
     .patch('/statuses/:id', { name: 'status', preValidation: app.authenticate }, async (req, reply) => {
@@ -53,10 +54,8 @@ export default (app) => {
     })
     .delete('/statuses/:id', { name: 'deleteStatus', preValidation: app.authenticate }, async (req, reply) => {
       const { id } = req.params;
-      // const taskStatus = await app.objection.models.taskStatus.query().findById(id);
-      // const tasks = await taskStatus.$relatedQuery('tasks');
-
-      const tasks = {};
+      const taskStatus = await app.objection.models.taskStatus.query().findById(id);
+      const tasks = await taskStatus.$relatedQuery('tasks');
 
       if (_.isEmpty(tasks)) {
         await app.objection.models.taskStatus.query().deleteById(id);
