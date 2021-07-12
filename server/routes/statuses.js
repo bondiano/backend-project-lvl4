@@ -14,7 +14,7 @@ export default (app) => {
       reply.render('statuses/new', { taskStatus });
     })
     .post('/statuses', { preValidation: app.authenticate }, async (req, reply) => {
-      const taskStatus = await app.objection.models.taskStatus.fromJson(req.body.data);
+      const taskStatus = new app.objection.models.taskStatus();
       taskStatus.$set(req.body.data);
 
       try {
