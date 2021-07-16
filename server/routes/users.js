@@ -1,6 +1,7 @@
 // @ts-check
 
 import i18next from 'i18next';
+import _ from 'lodash';
 
 export default (app) => {
   app
@@ -78,10 +79,18 @@ export default (app) => {
         return reply;
       }
 
-      await app.objection.models.user.query().deleteById(id);
+      const user = await app.objection.models.user.query().findById(id);
+      const taskCreator = await user.$relatedQuery('createdTasks');
+      const taskExecutor = await user.$relatedQuery('assignedTasks');
 
-      req.logOut();
-      req.flash('info', i18next.t('flash.user.delete.success'));
+      if (_.isEmpty(taskCreator) && _.isEmpty(taskExecutor)) {
+        await app.objection.models.user.query().deleteById(id);
+        req.logOut();
+        req.flash('info', i18next.t('flash.user.delete.success'));
+      } else {
+        req.flash('error', i18next.t('flash.user.delete.error'));
+      }
+
       reply.redirect(app.reverse('users'));
 
       return reply;

@@ -127,9 +127,11 @@ export default (app) => {
       const { data: formData } = req.body;
       const labelIds = normalizeMultiSelect(formData.labels);
 
+      const task = await app.objection.models.task.query().findById(taskId);
+
       const taskData = {
         id: Number(taskId),
-        creatorId: req.user.id,
+        creatorId: task.creatorId,
         statusId: Number(formData.statusId),
         name: formData.name,
         description: formData.description,
@@ -150,8 +152,7 @@ export default (app) => {
         req.flash('info', i18next.t('flash.task.edit.success'));
         reply.redirect(app.reverse('tasks'));
       } catch ({ data }) {
-        const [task, statuses, users, labels] = await Promise.all([
-          app.objection.models.task.query().findById(taskId),
+        const [statuses, users, labels] = await Promise.all([
           app.objection.models.taskStatus.query(),
           app.objection.models.user.query(),
           app.objection.models.label.query(),

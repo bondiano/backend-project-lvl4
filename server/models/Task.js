@@ -71,15 +71,11 @@ export default class Task extends BaseModel {
     },
 
     filterByExecutor(query, executorId) {
-      if (executorId !== null) {
-        query.where({ executorId });
-      }
+      query.where({ executorId });
     },
 
     filterByLabel(query, labelId) {
-      if (labelId !== null) {
-        query.where({ labelId });
-      }
+      query.where({ labelId });
     },
 
     filterByCreator(query, creatorId) {
